@@ -1,4 +1,4 @@
-require './app'
+require './stack'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
