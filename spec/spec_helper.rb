@@ -1,31 +1,4 @@
-Bundler.require :default
-require 'ostruct'
-
-class DeliveryRouter < Struct.new(:id, :x, :y)
-
-  def add_order(*args)
-  end
-
-  def route(*args)
-    []
-  end
-
-  def delivery_time(*args)
-    1
-  end
-
-  def clear_orders(*args)
-  end
-end
-
-class Customer < Struct.new(:id, :x, :y)
-end
-
-class Restaurant < Struct.new(:id, :cooking_time, :x, :y)
-end
-
-class Rider < Struct.new(:id, :speed, :x, :y)
-end
+require './stack'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
