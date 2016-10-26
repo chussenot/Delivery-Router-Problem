@@ -1,5 +1,4 @@
 Bundler.require :default
-require 'ostruct'
 
 class String
   def camelize
