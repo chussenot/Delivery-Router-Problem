@@ -1,8 +1,9 @@
 class Rider
-  attr_accessor :id, :speed, :x, :y, :collection
+  include Point::InstanceMethods
+  attr_accessor :id, :speed, :collection
   def initialize(attributes)
     @id = attributes[:id]
-    @x = attributes[:y]
+    @x = attributes[:x]
     @y = attributes[:y]
     @speed = attributes[:speed]
   end

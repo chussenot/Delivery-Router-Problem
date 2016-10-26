@@ -1,5 +1,7 @@
 # The DeliveryRouter contain all the logic
 class DeliveryRouter
+  attr_reader :orders
+
   def initialize(*args)
     o = args.pop
     @index = Hash[o.map { |k, v| [k, Collection[v]] }]

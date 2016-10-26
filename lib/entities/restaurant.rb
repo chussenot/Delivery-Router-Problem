@@ -1,8 +1,9 @@
 class Restaurant
-  attr_accessor :id, :cooking_time, :x, :y, :collection
+  include Point::InstanceMethods
+  attr_accessor :id, :cooking_time, :collection
   def initialize(attributes)
     @id = attributes[:id]
-    @x = attributes[:y]
+    @x = attributes[:x]
     @y = attributes[:y]
     @cooking_time = attributes[:cooking_time]
   end
