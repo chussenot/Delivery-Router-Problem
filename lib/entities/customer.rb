@@ -1,8 +1,9 @@
 class Customer
-  attr_accessor :id, :x, :y, :collection
+  include Point::InstanceMethods
+  attr_accessor :id, :collection
   def initialize(attributes = nil)
     @id = attributes[:id]
-    @x = attributes[:y]
+    @x = attributes[:x]
     @y = attributes[:y]
   end
 
