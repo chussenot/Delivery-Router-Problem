@@ -9,7 +9,10 @@ class DeliveryRouter
   end
 
   def add_order(*args)
-    @orders << Order.new(args.pop)
+    o = args.pop
+    customer = customers.find_by_id(o[:customer])
+    restaurant = restaurants.find_by_id(o[:restaurant])
+    @orders << Order.new(customer: customer, restaurant: restaurant)
   end
 
   def route(*args)
@@ -53,4 +56,9 @@ class DeliveryRouter
   def customers
     @index[:customers]
   end
+
+  def riders
+    @index[:riders]
+  end
+
 end

@@ -6,7 +6,7 @@ class Order
   end
 
   def to_hash
-    { customer: customer, restaurant: restaurant }
+    { customer: customer.id, restaurant: restaurant.id }
   end
 
   alias to_h to_hash
