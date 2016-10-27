@@ -7,8 +7,8 @@ class Collection
     end
   end
 
-  def initialize(*args)
-    @items = args.flatten
+  def initialize(items)
+    @items = items.flatten
     tap do |me|
       @items.each { |l| l.collection = me }
     end
@@ -26,6 +26,7 @@ class Collection
     o
   end
 
+  # @return [void]
   def each
     if block_given?
       @items.each { |l| yield l }
@@ -38,6 +39,7 @@ class Collection
     @items.map(&:to_a)
   end
 
+  # Inspects the object
   def inspect
     "<#{self.class} #{{ items: @items }}>"
   end

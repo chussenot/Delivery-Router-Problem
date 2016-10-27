@@ -36,13 +36,13 @@ describe Restaurant do
     it 'can manage euclidean_distance' do
       a = described_class.new x: 1, y: 2
       b = described_class.new x: 1, y: 2
-      expect(a.euclidean_distance(b)).to eq(0.0)
+      expect(a.distance(b)).to eq(0.0)
     end
 
     it 'can manage euclidean_distance' do
       a = described_class.new x: 1, y: 1
       b = described_class.new x: 0, y: 1
-      expect(a.euclidean_distance(b)).to eq(1.0)
+      expect(a.distance(b)).to eq(1.0)
     end
   end
 end
