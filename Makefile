@@ -3,4 +3,6 @@ console:
 bench:
 	bundle exec rake bench:measure
 measures:
-		python script/termgraph.py dat/time.dat
+	script/termgraph dat/time.dat
+watch:
+	script/watch
