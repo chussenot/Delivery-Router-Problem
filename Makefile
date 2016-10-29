@@ -12,3 +12,5 @@ doc:
 	bundle exec yard
 lint:
 	bundle exec rubocop -a
+critic:
+	bundle exec rubycritic config lib
