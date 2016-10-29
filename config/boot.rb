@@ -1,4 +1,5 @@
 Bundler.require :default
+require 'facets/hash/symbolize_keys'
 
 class String
   def camelize

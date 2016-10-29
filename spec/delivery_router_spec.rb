@@ -78,7 +78,7 @@ describe DeliveryRouter do
         end
       end
 
-      skip 'given customer 2 orders from restaurant 4' do
+      context 'given customer 2 orders from restaurant 4' do
         before(:all) do
           @delivery_router.add_order(customer: 2, restaurant: 4)
         end
