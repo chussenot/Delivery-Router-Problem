@@ -2,4 +2,8 @@
 
 set -e
 
-bundle exec rspec
+run_specs="
+  bundle exec rspec
+"
+
+$run_specs
