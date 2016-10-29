@@ -10,3 +10,5 @@ watch:
 	script/watch
 doc:
 	bundle exec yard
+lint:
+	bundle exec rubocop -a
