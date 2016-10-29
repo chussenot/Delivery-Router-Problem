@@ -1,3 +1,18 @@
+if ENV['COVERAGE']
+  Bundler.require(:simplecov)
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::CSVFormatter,
+    SimpleCov::Formatter::CoberturaFormatter,
+    SimpleCov::Formatter::JSONFormatter,
+    SimpleCov::Formatter::TextFormatter
+  ]
+  SimpleCov.start do
+    add_filter 'spec'
+    add_group 'Entities', 'lib/entities'
+  end
+end
+
 require './stack'
 
 RSpec.configure do |config|

@@ -1,4 +1,4 @@
-.PHONY: doc
+.PHONY: doc coverage
 
 console:
 	bundle exec pry -r ./stack.rb
@@ -14,3 +14,5 @@ lint:
 	bundle exec rubocop -a
 critic:
 	bundle exec rubycritic config lib
+coverage:
+	COVERAGE=true bundle exec rspec
