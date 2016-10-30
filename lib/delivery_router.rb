@@ -6,6 +6,9 @@ class DeliveryRouter
   def initialize(**options)
     options.symbolize_keys!
     @index = Hash[options.map { |k, v| [k, Collection[v]] }]
+    @index.keys.each do |key|
+      self.class.send(:define_method, key, -> { @index[key] })
+    end
     @orders = []
   end
 
@@ -40,18 +43,6 @@ class DeliveryRouter
 
   private
 
-  def restaurants
-    @index[:restaurants]
-  end
-
-  def customers
-    @index[:customers]
-  end
-
-  def riders
-    @index[:riders]
-  end
-
   def sol
     @solution ||= Hash.new { |h, k| h[k] = {} }
   end
@@ -74,5 +65,4 @@ class DeliveryRouter
       sol[:delivery_times][order.customer.id] = times[index]
     end
   end
-
 end
