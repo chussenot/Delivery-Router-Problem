@@ -1,12 +1,8 @@
 # Riders are ninjas!
-class Rider
-  include Point::InstanceMethods
-  attr_reader :id
-  attr_accessor :speed, :collection
+class Rider < Entity
+  attr_accessor :speed
   def initialize(options)
-    @id = options[:id]
-    @x = options[:x]
-    @y = options[:y]
+    super(options)
     @speed = options[:speed]
   end
 
@@ -21,8 +17,6 @@ class Rider
   # @return [Hash] Converts options object to an options hash. All keys
   #   will be symbolized.
   def to_hash
-    { id: id, x: x, y: y, speed: speed }
+    super.merge(speed: speed)
   end
-
-  alias to_h to_hash
 end

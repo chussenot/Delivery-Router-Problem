@@ -1,9 +1,4 @@
-class Foo
-  include Point::InstanceMethods
-  def initialize(attributes = nil)
-    @x = attributes[:x]
-    @y = attributes[:y]
-  end
+class Foo < Entity
 end
 
 describe Foo do
@@ -26,5 +21,11 @@ describe Foo do
     c = Foo.new x: 1, y: 2
     d = Foo.new x: 2, y: 1
     expect(a.distance(b)).to eq(c.distance(d))
+  end
+
+  it 'should calculate the geodesic distance in meters using Haversine formula' do
+    a = Foo.new lat: 50.0359, lng: -0.054253
+    b = Foo.new lat: 58.3838, lng: -0.030412
+    expect(a.distance(b, :geodesic).round(0)).to eq 928_245
   end
 end

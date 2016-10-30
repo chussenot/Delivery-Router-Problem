@@ -9,7 +9,6 @@ describe Restaurant do
   end
 
   it 'should have setters' do
-    expect(subject.respond_to?(:id=)).to eq(true)
     expect(subject.respond_to?(:x=)).to eq(true)
     expect(subject.respond_to?(:y=)).to eq(true)
     expect(subject.respond_to?(:cooking_time=)).to eq(true)
@@ -23,11 +22,9 @@ describe Restaurant do
   end
 
   it 'should assign values' do
-    subject.id = 2
     subject.x = 2
     subject.y = 2
     subject.cooking_time = 2
-    expect(subject.id).to eq(2)
     expect(subject.x).to eq(2)
     expect(subject.cooking_time).to eq(2)
   end

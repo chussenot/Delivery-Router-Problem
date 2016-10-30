@@ -1,5 +1,5 @@
 class Order
-  attr_accessor :customer, :restaurant, :collection
+  attr_accessor :customer, :restaurant
   def initialize(options)
     @customer = options[:customer]
     @restaurant = options[:restaurant]

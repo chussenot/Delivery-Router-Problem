@@ -8,7 +8,6 @@ describe Customer do
   end
 
   it 'should have setters' do
-    expect(subject.respond_to?(:id=)).to eq(true)
     expect(subject.respond_to?(:x=)).to eq(true)
     expect(subject.respond_to?(:y=)).to eq(true)
   end
@@ -20,10 +19,8 @@ describe Customer do
   end
 
   it 'should assign values' do
-    subject.id = 2
     subject.x = 2
     subject.y = 2
-    expect(subject.id).to eq(2)
     expect(subject.x).to eq(2)
     expect(subject.y).to eq(2)
   end

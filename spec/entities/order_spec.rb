@@ -5,7 +5,6 @@ describe Order do
   it 'should have getters' do
     expect(subject.respond_to?(:customer)).to eq(true)
     expect(subject.respond_to?(:restaurant)).to eq(true)
-    expect(subject.respond_to?(:collection)).to eq(true)
   end
 
   it 'should have setters' do
