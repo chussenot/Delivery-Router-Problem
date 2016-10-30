@@ -1,6 +1,34 @@
 # The DeliveryRouter contain all the logic
 # to drive dumb riders
 class DeliveryRouter
+  class Configuration
+    attr_accessor :steps
+
+    def initialize
+      @steps = [
+        TimeToRestaurant,
+        BestRider,
+        RideTotalDuration
+      ]
+    end
+  end
+
+  class << self
+    attr_writer :config
+  end
+
+  def self.config
+    @config ||= Configuration.new
+  end
+
+  def self.reset
+    @config = Configuration.new
+  end
+
+  def self.configure
+    yield(config)
+  end
+
   attr_reader :orders
 
   def initialize(**options)
@@ -23,12 +51,12 @@ class DeliveryRouter
   def route(**options)
     options.symbolize_keys!
     rider = options[:rider]
-    sol[:routes][rider] || []
+    s?[:routes][rider] || []
   end
 
   def delivery_time(**options)
     options.symbolize_keys!
-    sol[:delivery_times][options[:customer]]
+    s?[:delivery_times][options[:customer]]
   end
 
   # Clear every orders
@@ -43,7 +71,7 @@ class DeliveryRouter
 
   private
 
-  def sol
+  def s?
     @solution ||= Hash.new { |h, k| h[k] = {} }
   end
 
@@ -51,18 +79,15 @@ class DeliveryRouter
     params = { riders: riders }
     @solution = nil if method == :all # reset solution hash
     params[:orders] = method == :all ? @orders : [@orders.last]
-    # Times resolution
-    ok, times = TimeToRestaurant.run(params)
-    params[:times] = times
-    # Find the best riders
-    ok, winners = BestRider.run(params)
-    # Final ride duration
-    ok, times = RideTotalDuration.run(winners: winners)
+    DeliveryRouter.config.steps.each do |operation|
+      ok, params = operation.run(params)
+      raise 'Bad operation process' unless ok
+    end
     # Assign
-    winners.each.with_index do |winner, index|
+    params[:winners].each.with_index do |winner, index|
       _t, rider, order = winner
-      sol[:routes][rider.id] = order.to_a
-      sol[:delivery_times][order.customer.id] = times[index]
+      s?[:routes][rider.id] = order.to_a
+      s?[:delivery_times][order.customer.id] = params[:times][index]
     end
   end
 end

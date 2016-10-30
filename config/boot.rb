@@ -22,3 +22,11 @@ def autoload_all(root, pattern)
 end
 
 autoload_all '.', '{lib}/**/*.rb'
+
+DeliveryRouter.configure do |config|
+  config.steps = [
+    TimeToRestaurant,
+    BestRider,
+    RideTotalDuration
+  ]
+end
