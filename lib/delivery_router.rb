@@ -57,36 +57,22 @@ class DeliveryRouter
   end
 
   def update!(method = :last)
+    params = { riders: riders }
     @solution = nil if method == :all # reset solution hash
-    a = method == :all ? @orders : [@orders.last]
+    params[:orders] = method == :all ? @orders : [@orders.last]
     # Times resolution
-    times = riders.to_a.product(a)
-                  .map { |rider, order| ride_to_restaurant(rider, order) }
+    ok, times = TimeToRestaurant.run(params)
+    params[:times] = times
     # Find the best riders
-    fwos = a.map.with_index { |order, index| best_rider(order, times, index) }
+    ok, winners = BestRider.run(params)
     # Final ride duration
-    times = fwos.map { |f, w, o| ride_duration(f, w, o) }
-    fwos.each.with_index do |fwo, index|
-      _f, w, o = fwo
-      sol[:routes][w.id] = o.to_a
-      sol[:delivery_times][o.customer.id] = times[index]
+    ok, times = RideTotalDuration.run(winners: winners)
+    # Assign
+    winners.each.with_index do |winner, index|
+      _t, rider, order = winner
+      sol[:routes][rider.id] = order.to_a
+      sol[:delivery_times][order.customer.id] = times[index]
     end
   end
 
-  def best_rider(order, times, index)
-    time_map = Hash.new { |h, k| h[k] = [] }
-    riders.map { |rider| time_map[times.shift] << rider }
-    faster_time, winners = time_map.min_by { |k, _v| k }
-    winner = winners[index]
-    [faster_time, winner, order]
-  end
-
-  def ride_to_restaurant(rider, order)
-    60 / rider.speed * rider.distance(order.restaurant)
-  end
-
-  def ride_duration(faster_time, rider, order)
-    [faster_time, order.restaurant.cooking_time].max
-    + 60 / rider.speed * order.restaurant.distance(order.customer)
-  end
 end

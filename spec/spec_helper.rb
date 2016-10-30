@@ -10,6 +10,7 @@ if ENV['COVERAGE']
   SimpleCov.start do
     add_filter 'spec'
     add_group 'Entities', 'lib/entities'
+    add_group 'Operations', 'lib/operations'
   end
 end
 
