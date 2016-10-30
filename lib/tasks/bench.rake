@@ -23,7 +23,7 @@ namespace :bench do
     ]
     delivery_router = DeliveryRouter.new(restaurants: restaurants,
                                          customers: customers, riders: riders)
-    1000.times.each do |i|
+    10_000.times.each do |i|
       start = Time.now
       delivery_router.add_order(customer: 1, restaurant: 3)
       file_time.write("#{i}  #{Time.now - start}\n")

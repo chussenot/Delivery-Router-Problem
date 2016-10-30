@@ -1,4 +1,5 @@
 # The DeliveryRouter contain all the logic
+# to drive dumb riders
 class DeliveryRouter
   attr_reader :orders
 
@@ -19,20 +20,19 @@ class DeliveryRouter
   def route(**options)
     options.symbolize_keys!
     rider = options[:rider]
-    solution[:routes][rider] || []
+    sol[:routes][rider] || []
   end
 
   def delivery_time(**options)
     options.symbolize_keys!
-    solution[:delivery_times][options[:customer]]
+    sol[:delivery_times][options[:customer]]
   end
 
   # Clear every orders
   def clear_orders(**search)
     matchs = []
     @orders.each do |o|
-      h = Hash(o)
-      matchs << o if h.merge(search) == h
+      Hash(o).tap { |h| matchs << o if h.merge(search) == h }
     end
     @orders -= matchs
     update!(:all)
@@ -52,40 +52,41 @@ class DeliveryRouter
     @index[:riders]
   end
 
-  def update!(method = :last)
-    p = proc do |order|
-      time_map = Hash.new { |h, k| h[k] = [] }
-      riders.map do |rider|
-        time = ride_to_restaurant(rider, order)
-        time_map[time] << rider
-      end
-      faster_time, winners = time_map.min_by { |k, _v| k }
-      winner = winners.first
-      duration = ride_duration(winner, order)
-      solution[:routes][winner.id] = order.to_a
-      solution[:delivery_times][order.customer.id] = duration
-    end
-    o = case method
-        when :last
-          [@orders.last]
-        when :all
-          @solution = nil # reset solution hash
-          @orders
-        end
-    o.each { |order| p.call(order) }
+  def sol
+    @solution ||= Hash.new { |h, k| h[k] = {} }
   end
 
-  def solution
-    @solution ||= Hash.new { |h, k| h[k] = {} }
+  def update!(method = :last)
+    @solution = nil if method == :all # reset solution hash
+    a = method == :all ? @orders : [@orders.last]
+    # Times resolution
+    times = riders.to_a.product(a)
+                  .map { |rider, order| ride_to_restaurant(rider, order) }
+    # Find the best riders
+    fwos = a.map.with_index { |order, index| best_rider(order, times, index) }
+    # Final ride duration
+    times = fwos.map { |f, w, o| ride_duration(f, w, o) }
+    fwos.each.with_index do |fwo, index|
+      _f, w, o = fwo
+      sol[:routes][w.id] = o.to_a
+      sol[:delivery_times][o.customer.id] = times[index]
+    end
+  end
+
+  def best_rider(order, times, index)
+    time_map = Hash.new { |h, k| h[k] = [] }
+    riders.map { |rider| time_map[times.shift] << rider }
+    faster_time, winners = time_map.min_by { |k, _v| k }
+    winner = winners[index]
+    [faster_time, winner, order]
   end
 
   def ride_to_restaurant(rider, order)
     60 / rider.speed * rider.distance(order.restaurant)
   end
 
-  def ride_duration(rider, order)
-    time = [60 / rider.speed * rider.distance(order.restaurant),
-            order.restaurant.cooking_time].max
-    time += 60 / rider.speed * order.restaurant.distance(order.customer)
+  def ride_duration(faster_time, rider, order)
+    [faster_time, order.restaurant.cooking_time].max
+    + 60 / rider.speed * order.restaurant.distance(order.customer)
   end
 end

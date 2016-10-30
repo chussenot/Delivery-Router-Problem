@@ -36,7 +36,7 @@ class Collection
   end
 
   def to_array
-    @items.map(&:to_a)
+    @items
   end
 
   # Inspects the object
