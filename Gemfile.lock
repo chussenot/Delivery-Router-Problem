@@ -96,6 +96,7 @@ GEM
       simplecov
     slop (3.6.0)
     thread_safe (0.3.5)
+    uber (0.0.15)
     unicode-display_width (1.1.1)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -120,6 +121,7 @@ DEPENDENCIES
   simplecov-csv
   simplecov-json
   simplecov-text
+  uber (= 0.0.15)
   yard
 
 BUNDLED WITH
