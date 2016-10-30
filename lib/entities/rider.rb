@@ -17,6 +17,8 @@ class Rider < Entity
   # @return [Hash] Converts options object to an options hash. All keys
   #   will be symbolized.
   def to_hash
-    super.merge(speed: speed)
+    { speed: speed }.merge!(super)
   end
+
+  alias to_h to_hash
 end

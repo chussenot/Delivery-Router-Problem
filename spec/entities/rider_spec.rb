@@ -42,5 +42,15 @@ describe Rider do
       b = described_class.new x: 0, y: 1
       expect(a.distance(b)).to eq(1.0)
     end
+
+    it 'can be converted to Hash' do
+      expect(subject.to_hash).to eq(id: 1, x: 1, y: 1, speed: 1)
+    end
+
+    it 'can check equality' do
+      a = described_class.new x: 1, y: 2
+      b = described_class.new x: 1, y: 2
+      expect(a).to eq(b)
+    end
   end
 end

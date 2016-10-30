@@ -10,6 +10,8 @@ class Restaurant < Entity
   # @return [Hash] Converts options object to an options hash. All keys
   #   will be symbolized.
   def to_hash
-    super.merge(cooking_time: cooking_time)
+    { cooking_time: cooking_time }.merge!(super)
   end
+
+  alias to_h to_hash
 end

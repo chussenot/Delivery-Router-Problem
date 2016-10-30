@@ -33,6 +33,20 @@ require 'spec_helper'
 #       a break and they know how to solve a NP-complete problem in polynomial time ;)
 
 describe DeliveryRouter do
+  describe 'Configuration' do
+    before(:all) do
+      DeliveryRouter.configure do |config|
+        config.steps = [SimpleOperation, SimpleOperation]
+      end
+    end
+
+    it 'can be reset' do
+      expect(DeliveryRouter.config.steps).to match_array([SimpleOperation, SimpleOperation])
+      DeliveryRouter.reset
+      expect(DeliveryRouter.config.steps).to match_array([TimeToRestaurant, BestRider, RideTotalDuration])
+    end
+  end
+
   describe '#route' do
     before(:all) do
       @customers = [
