@@ -10,6 +10,7 @@ group :development do
   gem 'yard', require: false
   gem 'rubocop', require: false
   gem 'rubycritic', require: false
+  gem 'ruby-prof', require: false
 end
 
 group :simplecov do
