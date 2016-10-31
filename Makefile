@@ -18,3 +18,15 @@ critic: ## Generate a rubycritic report
 	bundle exec rubycritic config lib
 coverage: ## Generate SIMPLECOV report
 	COVERAGE=true bundle exec rspec
+debride: ## Analyze code for potentially uncalled / dead methods.
+	bundle exec debride lib spec boot
+cane: ## Code quality... Discipline will set you free.
+	bundle exec cane
+flog: ## Flog shows you the most torturous code you wrote.
+	find lib -name \*.rb | xargs flog
+flay:
+	bundle exec flay
+roodi: ## Roodi warns you about design issues
+	bundle exec roodi
+churn:
+	bundle exec churn
