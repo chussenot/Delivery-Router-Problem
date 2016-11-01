@@ -37,18 +37,18 @@ Delivery Router Problem
 Install
 -------
 You must run `bundle` to get all gems and start coding.
-There is a python dependency to help display performance charts.
+There is a Python dependency to help display performance charts.
 The [event notify test runner](https://bitbucket.org/eradman/entr/) `entr`
 binary is used to watch changes and autorun specs.
 
 Testing
 --------
-To run specs manually just do `bundle exec rspec`
+To run specs manually, run `bundle exec rspec`
 or `make watch` for autorun with `entr`.
 
 Console
 -------
-You can load all the stack in a Pry/Irb console with `make console` command
+You can load all the stack into a Pry/Irb console with the `make console` command
 
 Tools
 -----
