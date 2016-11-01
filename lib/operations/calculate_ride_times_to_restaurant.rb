@@ -1,5 +1,5 @@
-# Times resolution
-class TimeToRestaurant < Operation
+# Calculate times taken for all riders to reach any restaurant.
+class CalculateRideTimesToRestaurant < Operation
   def setup_params!(params)
     @orders = params[:orders]
     @riders = params[:riders]

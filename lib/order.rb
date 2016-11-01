@@ -5,8 +5,8 @@ class Order
     @restaurant = options[:restaurant]
   end
 
-  # @return [Hash] Converts options object to an options hash. All keys
-  #   will be symbolized.
+  # @return [Hash] Converts options object to an options hash.
+  # All keys will be symbolized.
   def to_hash
     { restaurant: restaurant.id, customer: customer.id }
   end

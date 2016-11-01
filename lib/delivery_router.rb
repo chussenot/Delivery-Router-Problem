@@ -1,35 +1,26 @@
-# The DeliveryRouter contain all the logic
+# The DeliveryRouter contains all the logic
 # to drive dumb riders
 class DeliveryRouter
   class Configuration
     attr_accessor :steps
-
     def initialize
-      @steps = [
-        TimeToRestaurant,
-        BestRider,
-        RideTotalDuration
-      ]
+      @steps = []
     end
   end
 
   class << self
-    attr_writer :config
-  end
+    def config
+      @config ||= Configuration.new
+    end
 
-  def self.config
-    @config ||= Configuration.new
-  end
+    def reset
+      @config = Configuration.new
+    end
 
-  def self.reset
-    @config = Configuration.new
+    def configure
+      yield(config)
+    end
   end
-
-  def self.configure
-    yield(config)
-  end
-
-  attr_reader :orders
 
   def initialize(**options)
     options.symbolize_keys!
@@ -77,17 +68,21 @@ class DeliveryRouter
 
   def update!(method = :last)
     params = { riders: riders }
-    @solution = nil if method == :all # reset solution hash
+    @solution = nil if method == :all # reset @solution hash
     params[:orders] = method == :all ? @orders : [@orders.last]
     DeliveryRouter.config.steps.each do |operation|
       ok, params = operation.run(params)
       raise 'Bad operation process' unless ok
     end
-    # Assign
-    params[:winners].each.with_index do |winner, index|
-      _t, rider, order = winner
-      s?[:routes][rider.id] = order.to_a
-      s?[:delivery_times][order.customer.id] = params[:times][index]
-    end
+    assign(params[:matchings])
+  end
+
+  # Assign matchings values to the @solution Hash
+  # for quick access
+  def assign(matchings)
+    matchings.each do |match|
+      s?[:routes][match.rider.id] = match.order.to_a
+      s?[:delivery_times][match.order.customer.id] = match.time
+    end unless matchings.nil?
   end
 end

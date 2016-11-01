@@ -43,12 +43,19 @@ describe DeliveryRouter do
     it 'can be reset' do
       expect(DeliveryRouter.config.steps).to match_array([SimpleOperation, SimpleOperation])
       DeliveryRouter.reset
-      expect(DeliveryRouter.config.steps).to match_array([TimeToRestaurant, BestRider, RideTotalDuration])
+      expect(DeliveryRouter.config.steps).to match_array([])
     end
   end
 
   describe '#route' do
     before(:all) do
+      DeliveryRouter.configure do |config|
+        config.steps = [
+          CalculateRideTimesToRestaurant,
+          MatchRidersWithOrders,
+          CalculateTotalJourneyTimes
+        ]
+      end
       @customers = [
         Customer.new(id: 1, x: 1, y: 1),
         Customer.new(id: 2, x: 5, y: 1)

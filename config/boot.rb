@@ -1,6 +1,8 @@
 Bundler.require :default
 require 'facets/hash/symbolize_keys'
+require 'uber/builder'
 
+# Additions to String class
 class String
   def camelize
     split(/[^a-z0-9]/i).map(&:capitalize).join
@@ -11,8 +13,8 @@ class String
   end
 end
 
-# Autoload classes
-def autoload_all(root, pattern)
+# require classes
+def require_all(root, pattern)
   Dir[File.join(root, pattern)].tap do |files|
     files.each do |file|
       autoload(File.basename(file, '.rb').classify.to_sym, file)
@@ -21,12 +23,12 @@ def autoload_all(root, pattern)
   end
 end
 
-autoload_all '.', '{lib}/**/*.rb'
+require_all '.', '{lib}/**/*.rb'
 
 DeliveryRouter.configure do |config|
   config.steps = [
-    TimeToRestaurant,
-    BestRider,
-    RideTotalDuration
+    CalculateRideTimesToRestaurant,
+    MatchRidersWithOrders,
+    CalculateTotalJourneyTimes
   ]
 end

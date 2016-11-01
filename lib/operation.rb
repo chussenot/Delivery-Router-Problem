@@ -1,5 +1,3 @@
-require 'uber/builder'
-
 class Operation
   include Uber::Builder
 
