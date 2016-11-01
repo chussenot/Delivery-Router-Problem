@@ -1,4 +1,5 @@
 module Point
+  # Allows an object to be positioned on a plane.
   module InstanceMethods
     attr_accessor :x, :y
 

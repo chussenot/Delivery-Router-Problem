@@ -1,5 +1,5 @@
-# Eating establishment where we prepare meals
-# This restaurant serves good food!
+# Eating establishment where we prepare meals.
+# These restaurants serve good food!
 class Restaurant < Entity
   attr_accessor :cooking_time
   def initialize(options)

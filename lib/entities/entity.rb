@@ -1,3 +1,4 @@
+# Allows objects to be identied and positioned.
 class Entity
   include Point::InstanceMethods
   attr_reader :id
