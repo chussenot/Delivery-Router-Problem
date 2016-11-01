@@ -3,6 +3,7 @@
 class DeliveryRouter
   class Configuration
     attr_accessor :steps
+
     def initialize
       @steps = []
     end
@@ -29,6 +30,7 @@ class DeliveryRouter
       self.class.send(:define_method, key, -> { @index[key] })
     end
     @orders = []
+    @solution = Hash.new { |h, k| h[k] = {} }
   end
 
   def add_order(**options)
@@ -63,12 +65,12 @@ class DeliveryRouter
   private
 
   def s?
-    @solution ||= Hash.new { |h, k| h[k] = {} }
+    @solution
   end
 
   def update!(method = :last)
     params = { riders: riders }
-    @solution = nil if method == :all # reset @solution hash
+    @solution.clear if method == :all # reset @solution hash
     params[:orders] = method == :all ? @orders : [@orders.last]
     DeliveryRouter.config.steps.each do |operation|
       ok, params = operation.run(params)

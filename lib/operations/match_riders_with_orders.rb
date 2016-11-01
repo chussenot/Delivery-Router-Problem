@@ -4,13 +4,14 @@ class MatchRidersWithOrders < Operation
     @times = params[:times]
     @orders = params[:orders]
     @riders = params[:riders]
+    @time_map = Hash.new { |h, k| h[k] = [] }
   end
 
   def process(params)
     matchings = @orders.map.with_index do |order, index|
-      time_map = Hash.new { |h, k| h[k] = [] }
-      @riders.map { |rider| time_map[@times.shift] << rider }
-      faster_time, riders = time_map.min_by { |k, _v| k }
+      @time_map.clear
+      @riders.map { |rider| @time_map[@times.shift] << rider }
+      faster_time, riders = @time_map.min_by { |k, _v| k }
       Matching.new(time: faster_time, rider: riders[index], order: order)
     end
     params.merge(matchings: matchings)

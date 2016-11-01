@@ -16,14 +16,9 @@ class Collection
 
   def find_by_id(id)
     return if id.nil?
-    o = nil
     @items.each do |i|
-      if i.to_h.merge(id: id) == i.to_h
-        o = i
-        break
-      end
+      return i if i.to_h.merge(id: id) == i.to_h
     end
-    o
   end
 
   # @return [void]
