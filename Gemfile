@@ -3,6 +3,7 @@ gem 'facets', '~> 2.9', require: false
 gem 'pry', '~> 0.10'
 gem 'pry-nav', '~> 0.2'
 gem 'uber', '~> 0.0'
+gem 'rb-readline'
 
 group :development do
   gem 'rake', '~> 10.5'
