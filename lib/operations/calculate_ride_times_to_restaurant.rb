@@ -7,6 +7,7 @@ class CalculateRideTimesToRestaurant < Operation
 
   def process(params)
     times = @riders.to_a.product(@orders).map do |rider, order|
+      raise Exception, 'order or rider is null' if order.nil? || rider.nil?
       60 / rider.speed * rider.distance(order.restaurant)
     end
     params.merge(times: times)

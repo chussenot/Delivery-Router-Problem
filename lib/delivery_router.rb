@@ -29,7 +29,7 @@ class DeliveryRouter
     @index.keys.each do |key|
       self.class.send(:define_method, key, -> { @index[key] })
     end
-    @orders = []
+    @orders = {}
     @solution = Hash.new { |h, k| h[k] = {} }
   end
 
@@ -37,7 +37,13 @@ class DeliveryRouter
     options.symbolize_keys!
     customer = customers.find_by_id(options[:customer])
     restaurant = restaurants.find_by_id(options[:restaurant])
-    @orders << Order.new(customer: customer, restaurant: restaurant)
+    @orders[customer.id] = Order.new(customer: customer, restaurant: restaurant)
+    update!(customer.id)
+  end
+
+  # Clear every orders
+  def clear_orders(**search)
+    @orders.delete search[:customer]
     update!
   end
 
@@ -52,26 +58,16 @@ class DeliveryRouter
     s?[:delivery_times][options[:customer]]
   end
 
-  # Clear every orders
-  def clear_orders(**search)
-    matchs = []
-    @orders.each do |o|
-      Hash(o).tap { |h| matchs << o if h.merge(search) == h }
-    end
-    @orders -= matchs
-    update!(:all)
-  end
-
   private
 
   def s?
     @solution
   end
 
-  def update!(method = :last)
+  def update!(customer_id = nil)
     params = { riders: riders }
-    @solution.clear if method == :all # reset @solution hash
-    params[:orders] = method == :all ? @orders : [@orders.last]
+    @solution.clear if customer_id.nil? # reset @solution hash
+    params[:orders] = customer_id.nil? ? @orders.values : [@orders[customer_id]]
     DeliveryRouter.config.steps.each do |operation|
       ok, params = operation.run(params)
       raise 'Bad operation process' unless ok

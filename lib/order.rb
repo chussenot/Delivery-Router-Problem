@@ -15,6 +15,11 @@ class Order
     [restaurant, customer]
   end
 
+  # Inspects the object
+  def inspect
+    "<#{self.class} #{{ customer: @customer.id, restaurant: @restaurant.id }}>"
+  end
+
   alias to_a to_array
   alias to_h to_hash
 end
