@@ -51,9 +51,9 @@ describe DeliveryRouter do
     before(:all) do
       DeliveryRouter.configure do |config|
         config.steps = [
-          CalculateRideTimesToRestaurant,
-          MatchRidersWithOrders,
-          CalculateTotalJourneyTimes
+          Naive::CalculateRideTimesToRestaurant,
+          Naive::MatchRidersWithOrders,
+          Naive::CalculateTotalJourneyTimes
         ]
       end
       @customers = [

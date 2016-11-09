@@ -27,8 +27,8 @@ require_all '.', '{lib}/**/*.rb'
 
 DeliveryRouter.configure do |config|
   config.steps = [
-    CalculateRideTimesToRestaurant,
-    MatchRidersWithOrders,
-    CalculateTotalJourneyTimes
+    Naive::CalculateRideTimesToRestaurant,
+    Naive::MatchRidersWithOrders,
+    Naive::CalculateTotalJourneyTimes
   ]
 end
