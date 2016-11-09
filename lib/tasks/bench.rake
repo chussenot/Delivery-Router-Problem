@@ -1,5 +1,5 @@
 def dat_file(type)
-  name = "dat/#{type}.dat"
+  name = "tmp/#{type}.dat"
   File.open(name, 'w').tap do |f|
     f.write("# #{type}\n")
   end

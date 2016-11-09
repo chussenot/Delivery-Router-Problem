@@ -7,7 +7,7 @@ console: ## Open a PRY console
 bench: ## Test the speed
 	bundle exec rake bench:measure
 measures: ## Display results
-	script/termgraph dat/time.dat
+	script/termgraph tmp/time.dat
 watch: ## Watch changes and run specs
 	script/watch
 doc: ## Create a YARD documentation
