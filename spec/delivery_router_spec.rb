@@ -47,6 +47,50 @@ describe DeliveryRouter do
     end
   end
 
+  describe 'np#route' do
+    before(:all) do
+      DeliveryRouter.configure do |config|
+        config.steps = [
+          Np::EvaluateSolutions,
+          Np::DetermineMatchings
+        ]
+      end
+        @customers = [
+          Customer.new(id: 1, x: 1, y: 1),
+          Customer.new(id: 2, x: 5, y: 1),
+          Customer.new(id: 3, x: 3, y: 8),
+          Customer.new(id: 4, x: 7, y: 22)
+        ]
+        @restaurants = [
+          Restaurant.new(id: 1, cooking_time: 15, x: 0, y: 0),
+          Restaurant.new(id: 2, cooking_time: 5, x: 5, y: 5),
+          Restaurant.new(id: 3, cooking_time: 25, x: 2, y: 10),
+          Restaurant.new(id: 4, cooking_time: 35, x: 8, y: 15)
+        ]
+        @riders = [
+          Rider.new(id: 1, speed: 10, x: 2, y: 0),
+          Rider.new(id: 2, speed: 10, x: 1, y: 0),
+          Rider.new(id: 2, speed: 7, x: 10, y: 0),
+          Rider.new(id: 2, speed: 10, x: 5, y: 3)
+        ]
+        @delivery_router = DeliveryRouter.new(restaurants: @restaurants,
+                                              customers: @customers, riders: @riders)
+    end
+
+    context 'Add orders to sequential manner' do
+      before(:all) do
+        @delivery_router.add_order(customer: 1, restaurant: 3)
+        @delivery_router.add_order(customer: 2, restaurant: 4)
+        @delivery_router.add_order(customer: 3, restaurant: 4)
+        @delivery_router.add_order(customer: 4, restaurant: 1)
+      end
+      it 'do something' do
+        # binding.pry
+      end
+    end
+
+  end
+
   describe '#route' do
     before(:all) do
       DeliveryRouter.configure do |config|
