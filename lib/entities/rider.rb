@@ -4,6 +4,21 @@ class Rider < Entity
   def initialize(options)
     super(options)
     @speed = options[:speed]
+    @affected = false
+  end
+
+  def affected?
+    @affected
+  end
+
+  def affect!
+    raise Exception, 'this rider is already affected' if @affected
+    @affected = true
+  end
+
+  def unaffect!
+    raise Exception, 'this rider is not affected' unless @affected
+    @affected = false
   end
 
   # @return [Boolean] whether another Options object equals the
