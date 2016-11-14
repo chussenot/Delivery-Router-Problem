@@ -41,6 +41,16 @@ class DeliveryRouter
     update!(customer.id)
   end
 
+  def add_orders(**options)
+    options.symbolize_keys!
+    options[:orders].each do |o|
+      customer = customers.find_by_id(o[:customer])
+      restaurant = restaurants.find_by_id(o[:restaurant])
+      @orders[customer.id] = Order.new(customer: customer, restaurant: restaurant)
+    end
+    update!
+  end
+
   # Clear every orders
   def clear_orders(**search)
     @orders.delete search[:customer]
@@ -65,9 +75,9 @@ class DeliveryRouter
   end
 
   def update!(customer_id = nil)
-    params = { riders: riders }
+    params = { riders: riders.clone }
     @solution.clear if customer_id.nil? # reset @solution hash
-    params[:orders] = customer_id.nil? ? @orders.values : [@orders[customer_id]]
+    params[:orders] = (customer_id.nil? ? @orders.values : [@orders[customer_id]]).clone
     DeliveryRouter.config.steps.each do |operation|
       ok, params = operation.run(params)
       raise 'Bad operation process' unless ok
